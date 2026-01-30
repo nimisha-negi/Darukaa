@@ -1,0 +1,159 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.auth-page {
+  height: 100vh;
+  width: 100vw;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  
+}
+/* .auth-page.login {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+} */
+
+.bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 110%; /* slightly larger for movement */
+  height: 110%;
+  background-size: cover;
+  background-position: center;
+  z-index: -1; /* behind glass card */
+}
+
+/* ✅ FORM CARD */
+.glass-card {
+  width: 380px;
+  padding: 35px;
+  position: absolute;
+  margin-top: 250px;
+  /* top: 50%; */
+  transform: translateY(-50%);
+  background: #f5efe6;
+  border-radius: 18px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.glass-card.right {
+  right: 8%;
+}
+
+.logo-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.logo {
+  width: 42px;
+}
+
+.brand-name {
+  font-family: "Playfair Display", serif;
+  font-size: 30px !important;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.glass-card p {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.glass-card input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.glass-card button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+   background: var(--button);
+  transition: all 0.2s ease-in-out;
+}
+.glass-card button:hover {
+  filter: brightness(1.3); 
+}
+
+.glass-card button:active {
+  filter: brightness(0.7);
+  transform: scale(0.98);}
+
+.glass-card span {
+  display: block;
+  margin-top: 15px;
+  font-size: 14px;
+  color: var(--primary);
+}
+
+.glass-card a {
+  font-weight: 500;
+  text-decoration: none;
+}
+
+/* 🌊 WAVE */
+.wave-full {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 160px;
+  z-index: 2;
+}
+
+.footer-wave {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 230px;
+  z-index: 1;
+}
+/* 🎨 THEMES */
+.auth-page.login {
+  --primary: #2e7d32;
+  --button: #1b5e20;
+}
+
+.auth-page.register {
+  --primary: #7d1f1f;
+  --button: #6d2727;
+}
+
+.glass-card h2 {
+  color: var(--primary);
+}
+
+.glass-card button {
+  background: var(--button);
+}
+
+.glass-card a {
+  color: var(--primary);
+}
+
+.glass-card input:focus {
+  border-color: var(--primary);
+}
+

@@ -1,0 +1,105 @@
+/* Page */
+.dash {
+  padding: 24px;
+  background: #f6f7f6;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Top stats */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.card {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.card p {
+  color: #6b6b6b;
+  margin-bottom: 6px;
+}
+
+.card h2 {
+  margin: 0;
+}
+
+/* Highlight card */
+.highlight {
+  background: #4caf50;
+  color: white;
+}
+
+.highlight p {
+  color: #e9ffe9;
+}
+
+/* Middle section */
+.middle {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.middle h3 {
+  margin-bottom: 12px;
+}
+
+/* Activity */
+.activity {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.activity li {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background: #4caf50;
+  border-radius: 50%;
+  margin-top: 6px;
+}
+
+/* Map section */
+.map {
+  margin-top: 20px;
+}
+
+.map-box {
+  height: 200px;
+  background: #eef2ee;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b6b6b;
+  font-size: 18px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .middle {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats {
+    grid-template-columns: 1fr;
+  }
+}
