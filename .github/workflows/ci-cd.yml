@@ -1,5 +1,4 @@
-name: Full CI/CD Pipeline
-
+name: Deploying to Render
 on:
   push:
     branches:
