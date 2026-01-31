@@ -15,23 +15,15 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     try:
         # Validate username
         if not user.username or len(user.username.strip()) < 3:
-            raise HTTPException(
-                status_code=400, detail="Username > 3 characters"
-            )
+            raise HTTPException(status_code=400, detail="Username > 3 characters")
         if len(user.username.strip()) > 50:
-            raise HTTPException(
-                status_code=400, detail="Username < 50 characters"
-            )
+            raise HTTPException(status_code=400, detail="Username < 50 characters")
 
         # Validate password
         if not user.password or len(user.password) < 6:
-            raise HTTPException(
-                status_code=400, detail="Password > 6 characters"
-            )
+            raise HTTPException(status_code=400, detail="Password > 6 characters")
         if len(user.password.encode("utf-8")) > 72:
-            raise HTTPException(
-                status_code=400, detail="Password too long"
-            )
+            raise HTTPException(status_code=400, detail="Password too long")
 
         # Check if email already exists
         if db.query(User).filter(User.email == user.email).first():
