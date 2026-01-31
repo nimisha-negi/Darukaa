@@ -1,16 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import ProjectCard from "./ProjectCard";
 import Site from "./Site";
 import "./projects.css";
 import { getProjects, createProject, deleteProject } from "../../api/project";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import { MdAdd, MdClose, MdPlace, MdAccessTime } from "react-icons/md";
 import "react-toastify/dist/ReactToastify.css";
+
+import { formatDateIST } from "../../utils/dateUtils";
 
 const normalizeProject = (p) => ({
   ...p,
-  sitesData: Array.isArray(p?.sitesData) ? p.sitesData : [], // ⭐ important
+  sitesData: Array.isArray(p?.sitesData) ? p.sitesData : [],
   sites: typeof p?.sites === "number" ? p.sites : (p?.sitesData?.length || 0),
-  updated: p?.updated || "Just now",
+  updated: p?.updated || new Date().toISOString(),
 });
 
 export default function Projects() {
@@ -18,7 +21,7 @@ export default function Projects() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newProject, setNewProject] = useState({
     title: "",
-    icon: "🌍",
+    icon: "MdPublic",
     description: "",
   });
   const [selectedProject, setSelectedProject] = useState(null);
@@ -48,11 +51,11 @@ export default function Projects() {
 
       setProjects([normalizedCreated, ...projects]);
       toast.success("Project added successfully!");
-      setNewProject({ title: "", icon: "🌍", description: "" });
+      setNewProject({ title: "", icon: "MdPublic", description: "" });
       setShowCreateModal(false);
     } catch (err) {
       console.error(err.message);
-      toast.error("Error while creating projects!");
+      toast.error(err.message);
     }
   };
 
@@ -68,20 +71,24 @@ export default function Projects() {
       }
     } catch (err) {
       console.error(err.message);
-      toast.error("Error while deleting project!");
+      toast.error(err.message);
     }
   };
 
+  // Helper for modal date
+  const formattedUpdatedDate = useMemo(() => {
+    return formatDateIST(selectedProject?.updated);
+  }, [selectedProject]);
+
   return (
     <div>
-      <ToastContainer position="top-right" autoClose={3000} />
       {/* HEADER */}
       <div className="projects-header">
         <button
           className="new-project-btn"
           onClick={() => setShowCreateModal(true)}
         >
-          + Create Project
+          <MdAdd size={20} style={{ marginRight: "5px" }} /> Create Project
         </button>
       </div>
 
@@ -91,7 +98,6 @@ export default function Projects() {
           <ProjectCard
             key={project.id}
             project={project}
-            // ✅ CHANGE 5: always open normalized version (safe sitesData)
             onView={() => setSelectedProject(normalizeProject(project))}
             onDelete={() => handleDelete(project.id)}
           />
@@ -105,7 +111,9 @@ export default function Projects() {
           onClick={() => setShowCreateModal(false)}
         >
           <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <h3>Create New Project</h3>
+            <div className="modal-header">
+              <h3>Create New Project</h3>
+            </div>
 
             <label>Project Name</label>
             <input
@@ -133,16 +141,16 @@ export default function Projects() {
                 setNewProject({ ...newProject, icon: e.target.value })
               }
             >
-              <option value="🌍">🌍 Earth</option>
-              <option value="🌿">🌿 Green</option>
-              <option value="🔥">🔥 Heat</option>
-              <option value="💧">💧 Water</option>
-              <option value="🌱">🌱 Growth</option>
+              <option value="MdPublic">🌍 Earth</option>
+              <option value="MdGrass">🌿 Green</option>
+              <option value="MdLocalFireDepartment">🔥 Heat</option>
+              <option value="MdWater">💧 Water</option>
+              <option value="MdTerrain">🌱 Growth</option>
             </select>
 
             <div className="modal-actions">
               <button onClick={() => setShowCreateModal(false)}>Cancel</button>
-              <button onClick={handleCreateProject}>Create</button>
+              <button onClick={handleCreateProject} className="primary-btn">Create</button>
             </div>
           </div>
         </div>
@@ -158,10 +166,13 @@ export default function Projects() {
             <h3>{selectedProject.title}</h3>
             <p>{selectedProject.description}</p>
 
-            {/* ✅ CHANGE 6: safe fallback for sites count */}
-            <p>📍 Sites: {selectedProject?.sites ?? 0}</p>
+            <p style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <MdPlace /> Sites: {selectedProject?.sites ?? 0}
+            </p>
 
-            <p>🕒 Last updated: {selectedProject?.updated ?? "Just now"}</p>
+            <p style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <MdAccessTime /> Last updated: {formattedUpdatedDate}
+            </p>
 
             <div className="modal-actions">
               <button onClick={() => setSelectedProject(null)}>Close</button>

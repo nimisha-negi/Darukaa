@@ -6,6 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { createSite, getSitesByProject, deleteSite } from "../../api/sites";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
+import { MdAdd, MdSave, MdClose, MdDelete, MdMap } from "react-icons/md";
+import { formatDateIST } from "../../utils/dateUtils";
 import "./projects.css";
 
 export default function Site({ project, onClose }) {
@@ -150,21 +152,21 @@ export default function Site({ project, onClose }) {
       <ToastContainer position="top-center" autoClose={3000} />
       <div className="site-map-header">
         <div>
-          <h2>{project?.title}</h2>
+          <h2><MdMap style={{ verticalAlign: "middle", marginRight: "8px" }} />{project?.title}</h2>
           <p>Draw polygon → Save Sites</p>
         </div>
 
         <div className="site-map-actions">
           <button className="btn-outline" onClick={handleAddSiteMode}>
-            + Add Site
+            <MdAdd /> Add Site
           </button>
 
           <button className="btn-primary" onClick={handleSaveSites}>
-            Save Sites
+            <MdSave /> Save Sites
           </button>
 
           <button className="btn-danger" onClick={onClose}>
-            Close
+            <MdClose /> Close
           </button>
         </div>
       </div>
@@ -187,12 +189,15 @@ export default function Site({ project, onClose }) {
                 </p>
 
                 <p style={{ opacity: 0.7, fontSize: "12px" }}>{s.site_id}</p>
+                <p style={{ opacity: 0.6, fontSize: "11px", marginTop: "2px" }}>
+                  {formatDateIST(s.created_at)}
+                </p>
 
                 <button
                   className="btn-danger btn-small"
                   onClick={() => handleDeleteSite(s.site_id)}
                 >
-                  Delete
+                  <MdDelete />
                 </button>
               </div>
             ))

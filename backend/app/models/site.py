@@ -1,5 +1,5 @@
 # app/models/site.py
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import JSON
@@ -16,6 +16,10 @@ class Site(Base):
     project_id = Column(Integer, ForeignKey("projects.id"))
     name = Column(String, nullable=False)
     feature = Column(JSON)
-    created_at = Column(DateTime, default=datetime.utcnow)
-
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated = Column(
+        DateTime,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
     project = relationship("Project", back_populates="sites")

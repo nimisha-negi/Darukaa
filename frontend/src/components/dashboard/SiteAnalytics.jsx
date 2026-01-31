@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,6 +12,8 @@ import {
 } from "chart.js";
 
 import { Line, Doughnut, Bar } from "react-chartjs-2";
+import { MdClose, MdForest, MdCo2, MdGrass, MdTerrain, MdCalendarToday, MdUpdate, MdSquareFoot } from "react-icons/md";
+import { formatDateIST } from "../../utils/dateUtils";
 
 ChartJS.register(
   CategoryScale,
@@ -25,14 +27,15 @@ ChartJS.register(
 );
 
 export default function SiteAnalytics({ site, projectName, onClose }) {
-  const [metrics, setMetrics] = React.useState({
+  const [metrics, setMetrics] = useState({
     area: "0",
     treeCount: 0,
     vegetation: "0",
     soilCarbon: "0",
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMetrics({
       area: (Math.random() * 5000 + 1500).toFixed(2),
       treeCount: Math.floor(Math.random() * 500000 + 150000),
@@ -128,13 +131,31 @@ export default function SiteAnalytics({ site, projectName, onClose }) {
         <div className="sa-header">
           <div className="sa-title">
             <h2>
-              {projectName} — <span>{site.name}</span>
+              {projectName} - <span>{site.name}</span>
             </h2>
             <p className="sa-subtitle">Site Analytics Overview</p>
           </div>
 
-          <button className="sa-close-btn" onClick={onClose}>
-            ×
+          <button
+            onClick={onClose}
+            style={{
+              width: "36px",
+              height: "36px",
+              borderRadius: "50%",
+              border: "1px solid #ccc",
+              backgroundColor: "white",
+              color: "#333",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+              zIndex: 10,
+              padding: 0,
+              minWidth: "36px",
+            }}
+          >
+            <MdClose style={{ width: "20px", height: "20px", color: "#333" }} />
           </button>
         </div>
 
@@ -145,40 +166,40 @@ export default function SiteAnalytics({ site, projectName, onClose }) {
             <div className="sa-metric-card">
               <h4>Site Overview</h4>
               <div className="sa-metric-row">
-                <span>Area</span>
+                <span><MdSquareFoot /> Area</span>
                 <strong>{metrics.area} hectares</strong>
               </div>
               <div className="sa-metric-row">
-                <span>Total Carbon</span>
+                <span><MdCo2 /> Total Carbon</span>
                 <strong>{carbonData.at(-1)} tonnes</strong>
               </div>
               <div className="sa-metric-row">
-                <span>Biodiversity Score</span>
+                <span><MdForest /> Biodiversity</span>
                 <strong>{biodiversityData.at(-1)}</strong>
               </div>
               <div className="sa-metric-row">
-                <span>Created</span>
-                <strong>{new Date().toLocaleDateString()}</strong>
+                <span><MdCalendarToday /> Created</span>
+                <strong>{formatDateIST(site.created_at || new Date())}</strong>
               </div>
             </div>
 
             <div className="sa-metric-card">
               <h4>Latest Metrics</h4>
               <div className="sa-metric-row">
-                <span>Tree Count</span>
+                <span><MdForest /> Tree Count</span>
                 <strong>{metrics.treeCount.toLocaleString()}</strong>
               </div>
               <div className="sa-metric-row">
-                <span>Vegetation Cover</span>
+                <span><MdGrass /> Vegetation</span>
                 <strong>{metrics.vegetation}%</strong>
               </div>
               <div className="sa-metric-row">
-                <span>Soil Carbon</span>
+                <span><MdTerrain /> Soil Carbon</span>
                 <strong>{metrics.soilCarbon}%</strong>
               </div>
               <div className="sa-metric-row">
-                <span>Last Updated</span>
-                <strong>{new Date().toLocaleDateString()}</strong>
+                <span><MdUpdate /> Last Updated</span>
+                <strong>{formatDateIST(new Date())}</strong>
               </div>
             </div>
           </div>
