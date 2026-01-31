@@ -1,10 +1,12 @@
 # app/models/site.py
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
-from sqlalchemy.orm import relationship
-from sqlalchemy.dialects.postgresql import JSON
 from datetime import datetime
+
 from app.database import Base
 from app.models.project import Project
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy.dialects.postgresql import JSON
+from sqlalchemy.orm import relationship
+
 
 class Site(Base):
     __tablename__ = "sites"

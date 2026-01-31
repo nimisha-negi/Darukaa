@@ -1,7 +1,9 @@
 # app/schema/site.py
-from pydantic import BaseModel, Field
-from typing import Dict, Any
 from datetime import datetime
+from typing import Any, Dict
+
+from pydantic import BaseModel, Field
+
 
 class SiteBase(BaseModel):
     site_id: str
@@ -9,8 +11,10 @@ class SiteBase(BaseModel):
     name: str
     feature: Dict[str, Any]
 
+
 class SiteCreate(SiteBase):
     pass
+
 
 class SiteOut(BaseModel):
     site_id: str

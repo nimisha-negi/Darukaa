@@ -1,9 +1,10 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from app.database import engine, Base
 from app.api.v1.auth import router as auth_router
 from app.api.v1.projects import router as projects_router
-from app.api.v1.sites import router as sites_router   # <== imported as sites_router
+from app.api.v1.sites import \
+    router as sites_router  # <== imported as sites_router
+from app.database import Base, engine
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Daruka.Earth Backend", version="1.0")
 
@@ -26,7 +27,8 @@ Base.metadata.create_all(bind=engine)
 # ✅ Include routers
 app.include_router(auth_router)
 app.include_router(projects_router)
-app.include_router(sites_router, prefix="/api/v1")   # <== fixed variable name
+app.include_router(sites_router, prefix="/api/v1")  # <== fixed variable name
+
 
 @app.get("/")
 def root():

@@ -1,11 +1,13 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+from app.core.security import (create_access_token, hash_password,
+                               verify_password)
 from app.database import get_db
 from app.models.user import User
-from app.schema.user import UserCreate, UserLogin, Token
-from app.core.security import hash_password, verify_password, create_access_token
+from app.schema.user import Token, UserCreate, UserLogin
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
+
 
 # ----- Register -----
 @router.post("/register", status_code=201)
@@ -13,15 +15,23 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     try:
         # Validate username
         if not user.username or len(user.username.strip()) < 3:
-            raise HTTPException(status_code=400, detail="Username must be at least 3 characters")
+            raise HTTPException(
+                status_code=400, detail="Username > 3 characters"
+            )
         if len(user.username.strip()) > 50:
-            raise HTTPException(status_code=400, detail="Username must be at most 50 characters")
+            raise HTTPException(
+                status_code=400, detail="Username < 50 characters"
+            )
 
         # Validate password
         if not user.password or len(user.password) < 6:
-            raise HTTPException(status_code=400, detail="Password must be at least 6 characters")
+            raise HTTPException(
+                status_code=400, detail="Password > 6 characters"
+            )
         if len(user.password.encode("utf-8")) > 72:
-            raise HTTPException(status_code=400, detail="Password too long; max 72 bytes")
+            raise HTTPException(
+                status_code=400, detail="Password too long"
+            )
 
         # Check if email already exists
         if db.query(User).filter(User.email == user.email).first():
@@ -31,7 +41,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
         new_user = User(
             username=user.username.strip(),
             email=user.email.strip(),
-            hashed_password=hash_password(user.password)
+            hashed_password=hash_password(user.password),
         )
         db.add(new_user)
         db.commit()
@@ -52,8 +62,7 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
 
         if not db_user or not verify_password(user.password, db_user.hashed_password):
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid credentials"
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
             )
 
         token = create_access_token({"sub": str(db_user.id)})
