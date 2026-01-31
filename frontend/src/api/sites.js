@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: process.env.REACT_APP_API_URL + "/api/v1",
-});
+baseURL: `${import.meta.env.VITE_API_URL}/api/v1`,});
 
 // ✅ attach token automatically
 API.interceptors.request.use((config) => {

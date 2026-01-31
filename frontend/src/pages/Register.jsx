@@ -8,16 +8,31 @@ import "react-toastify/dist/ReactToastify.css";
 import bg from "../assets/register-bg.png";
 import logo from "../assets/logo.png";
 
-import { registerUser } from "../api/auth"; // ✅ NEW
+import { registerUser } from "../api/auth"; // ✅
 
 export default function Register() {
   const navigate = useNavigate();
+
+  // ✅ Parallax mouse movement state
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
   });
+
+  // ✅ Parallax mouse move handler (same as Login)
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e;
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+
+    setMousePosition({
+      x: (clientX - centerX) / 80,
+      y: (clientY - centerY) / 80,
+    });
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -35,7 +50,7 @@ export default function Register() {
     }
 
     try {
-      const data = await registerUser(formData); // ✅ API CALL FROM auth.js
+      const data = await registerUser(formData);
 
       toast.success(data.message || "Registered successfully!");
       setTimeout(() => navigate("/"), 1500);
@@ -51,15 +66,28 @@ export default function Register() {
   return (
     <motion.div
       className="auth-page register"
+      onMouseMove={handleMouseMove} // ✅ added parallax trigger
       initial={{ opacity: 0, x: -80, scale: 0.98 }}
       animate={{ opacity: 1, x: 0, scale: 1 }}
       exit={{ opacity: 0, x: 80, scale: 1.02 }}
       transition={{ duration: 0.65, ease: [0.4, 0.0, 0.2, 1] }}
     >
+      {/* ✅ Parallax moving background */}
       <motion.div
         className="bg-image"
-        style={{ backgroundImage: `url(${bg})` }}
-        transition={{ type: "spring", stiffness: 50, damping: 20 }}
+        style={{
+          backgroundImage: `url(${bg})`,
+          x: mousePosition.x,
+          y: mousePosition.y,
+        }}
+        initial={{ scale: 1.05, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{
+          duration: 1,
+          type: "spring",
+          stiffness: 50,
+          damping: 20,
+        }}
       />
 
       <div className="glass-card right">
@@ -102,7 +130,7 @@ export default function Register() {
 
       <ToastContainer position="top-right" autoClose={3000} />
 
-      {/* Footer wave SVG (same as yours) */}
+      {/* ✅ Footer wave SVG (same as yours) */}
       <svg
         className="footer-wave"
         viewBox="0 0 1440 260"

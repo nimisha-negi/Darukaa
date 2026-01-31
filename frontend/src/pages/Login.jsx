@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import bg from "../assets/bg.png";
 import logo from "../assets/logo.png";
 
-import { loginUser } from "../api/auth"; // ✅ NEW
+import { loginUser } from "../api/auth"; 
 
 export default function Login() {
   const navigate = useNavigate();

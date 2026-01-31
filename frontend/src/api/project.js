@@ -1,4 +1,4 @@
-const BASE_URL = process.env.REACT_APP_API_URL + "/projects/";
+const BASE_URL = `${import.meta.env.VITE_API_URL}/projects/`;
 
 const getAuthHeader = () => {
   const token = localStorage.getItem("access_token");
