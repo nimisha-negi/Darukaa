@@ -1,16 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import avatar from "../../assets/avatar.webp";
 
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const [username, setUsername] = useState("User");
-
-  useEffect(() => {
-    const savedName = localStorage.getItem("username");
-    if (savedName) setUsername(savedName);
-  }, []);
+  const [username] = useState(() => localStorage.getItem("username") || "User");
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
@@ -25,11 +20,11 @@ export default function Navbar() {
       <div className="nav-right">
         <span className="icon">🔔</span>
 
-        
+
         <img src={avatar} alt="user" className="nav-avatar" />
 
 
-        <span className="logout" onClick={handleLogout} style={{cursor:"pointer"}}>
+        <span className="logout" onClick={handleLogout} style={{ cursor: "pointer" }}>
           Logout ▾
         </span>
       </div>

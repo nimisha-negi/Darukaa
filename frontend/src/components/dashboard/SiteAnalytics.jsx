@@ -25,6 +25,22 @@ ChartJS.register(
 );
 
 export default function SiteAnalytics({ site, projectName, onClose }) {
+  const [metrics, setMetrics] = React.useState({
+    area: "0",
+    treeCount: 0,
+    vegetation: "0",
+    soilCarbon: "0",
+  });
+
+  React.useEffect(() => {
+    setMetrics({
+      area: (Math.random() * 5000 + 1500).toFixed(2),
+      treeCount: Math.floor(Math.random() * 500000 + 150000),
+      vegetation: (Math.random() * 30 + 60).toFixed(1),
+      soilCarbon: (Math.random() * 5 + 1).toFixed(2),
+    });
+  }, []);
+
   if (!site) return null;
 
   const labels = ["Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov"];
@@ -41,11 +57,6 @@ export default function SiteAnalytics({ site, projectName, onClose }) {
     },
   };
 
-  // Random metrics (demo)
-  const area = (Math.random() * 5000 + 1500).toFixed(2);
-  const treeCount = Math.floor(Math.random() * 500000 + 150000);
-  const vegetation = (Math.random() * 30 + 60).toFixed(1);
-  const soilCarbon = (Math.random() * 5 + 1).toFixed(2);
 
   // ✅ Doughnut chart (Carbon Storage Breakdown)
   const carbonBreakdownData = {
@@ -135,7 +146,7 @@ export default function SiteAnalytics({ site, projectName, onClose }) {
               <h4>Site Overview</h4>
               <div className="sa-metric-row">
                 <span>Area</span>
-                <strong>{area} hectares</strong>
+                <strong>{metrics.area} hectares</strong>
               </div>
               <div className="sa-metric-row">
                 <span>Total Carbon</span>
@@ -155,15 +166,15 @@ export default function SiteAnalytics({ site, projectName, onClose }) {
               <h4>Latest Metrics</h4>
               <div className="sa-metric-row">
                 <span>Tree Count</span>
-                <strong>{treeCount.toLocaleString()}</strong>
+                <strong>{metrics.treeCount.toLocaleString()}</strong>
               </div>
               <div className="sa-metric-row">
                 <span>Vegetation Cover</span>
-                <strong>{vegetation}%</strong>
+                <strong>{metrics.vegetation}%</strong>
               </div>
               <div className="sa-metric-row">
                 <span>Soil Carbon</span>
-                <strong>{soilCarbon}%</strong>
+                <strong>{metrics.soilCarbon}%</strong>
               </div>
               <div className="sa-metric-row">
                 <span>Last Updated</span>

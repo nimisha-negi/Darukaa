@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import bg from "../assets/bg.png";
 import logo from "../assets/logo.png";
 
-import { loginUser } from "../api/auth"; 
+import { loginUser } from "../api/auth";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -71,7 +71,7 @@ export default function Login() {
       <div className="glass-card right">
         <div className="logo-row">
           <img src={logo} className="logo" alt="logo" />
-          <span className="brand-name">Darukaa.Earth</span>
+          <span className="brand-name">Darukaaa.Earth</span>
         </div>
 
         <h2>Welcome Back</h2>
@@ -147,7 +147,7 @@ export default function Login() {
           fontSize="14"
           fontFamily="Inter, sans-serif"
         >
-          © 2026 Darukaa.Earth. All rights reserved.
+          © 2026 Darukaaa.Earth. All rights reserved.
         </text>
       </svg>
     </div>

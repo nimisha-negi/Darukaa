@@ -3,7 +3,15 @@ import ProjectCard from "./ProjectCard";
 import Site from "./Site";
 import "./projects.css";
 import { getProjects, createProject, deleteProject } from "../../api/project";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const normalizeProject = (p) => ({
+  ...p,
+  sitesData: Array.isArray(p?.sitesData) ? p.sitesData : [], // ⭐ important
+  sites: typeof p?.sites === "number" ? p.sites : (p?.sitesData?.length || 0),
+  updated: p?.updated || "Just now",
+});
 
 export default function Projects() {
   const [projects, setProjects] = useState([]);
@@ -16,28 +24,21 @@ export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [showAddSiteModal, setShowAddSiteModal] = useState(false);
 
-  // ✅ CHANGE 1: normalize project data (so sitesData is never undefined)
-  const normalizeProject = (p) => ({
-    ...p,
-    sitesData: Array.isArray(p?.sitesData) ? p.sitesData : [], // ⭐ important
-    sites: typeof p?.sites === "number" ? p.sites : (p?.sitesData?.length || 0),
-    updated: p?.updated || "Just now",
-  });
-
-  // Fetch projects from backend
-  const fetchProjects = async () => {
-    try {
-      const data = await getProjects();
-
-      // ✅ CHANGE 2: normalize backend response before saving in state
-      const normalized = Array.isArray(data) ? data.map(normalizeProject) : [];
-      setProjects(normalized);
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
+  // ✅ CHANGE 1: normalize project data (moved out)
+  // (removed from here)
 
   useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const data = await getProjects();
+        // ✅ CHANGE 2: normalize backend response before saving in state
+        const normalized = Array.isArray(data) ? data.map(normalizeProject) : [];
+        setProjects(normalized);
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+
     fetchProjects();
   }, []);
 
@@ -79,6 +80,7 @@ export default function Projects() {
 
   return (
     <div>
+      <ToastContainer position="top-right" autoClose={3000} />
       {/* HEADER */}
       <div className="projects-header">
         <button
@@ -191,11 +193,11 @@ export default function Projects() {
               prev.map((p) =>
                 p.id === selectedProject.id
                   ? {
-                      ...p,
-                      sitesData: safeSitesData,
-                      sites: safeSitesData.length,
-                      updated: "Just now",
-                    }
+                    ...p,
+                    sitesData: safeSitesData,
+                    sites: safeSitesData.length,
+                    updated: "Just now",
+                  }
                   : p
               )
             );
@@ -204,11 +206,11 @@ export default function Projects() {
             setSelectedProject((prev) =>
               prev
                 ? {
-                    ...prev,
-                    sitesData: safeSitesData,
-                    sites: safeSitesData.length,
-                    updated: "Just now",
-                  }
+                  ...prev,
+                  sitesData: safeSitesData,
+                  sites: safeSitesData.length,
+                  updated: "Just now",
+                }
                 : prev
             );
           }}

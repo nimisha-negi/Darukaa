@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { createSite, getSitesByProject, deleteSite } from "../../api/sites";
-
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import "./projects.css";
@@ -64,6 +64,7 @@ export default function Site({ project, onClose }) {
           }
         });
       } catch (err) {
+        toast.error("Error fetching sites");
         console.error("Error fetching sites:", err);
       }
     };
@@ -123,7 +124,9 @@ export default function Site({ project, onClose }) {
       backendSites.forEach((site) => {
         if (site?.feature) drawRef.current.add(site.feature);
       });
+      toast.success("Site saved successfully!");
     } catch (err) {
+      toast.error
       console.error("Error saving sites:", err);
     }
   };
@@ -145,6 +148,7 @@ export default function Site({ project, onClose }) {
       backendSites.forEach((site) => {
         if (site?.feature) drawRef.current.add(site.feature);
       });
+      toast.success("Site removed successfully!");
     } catch (err) {
       console.error("Error deleting site:", err);
     }

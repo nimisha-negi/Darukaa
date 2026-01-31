@@ -4,8 +4,8 @@ export default function Sidebar({ activeTab, setActiveTab }) {
   return (
     <aside className="dash-sidebar">
       <div className="sidebar-brand">
-        <img src={logo} alt="Daruka Earth Logo" />
-        <h2>Darukaa.Earth</h2>
+        <img src={logo} alt="Darukaa Earth Logo" />
+        <h2>Darukaaa.Earth</h2>
       </div>
 
       <div className="sidebar-divider" />
