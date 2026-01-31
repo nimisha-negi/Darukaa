@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ProjectCard from "./ProjectCard";
 import Site from "./Site";
-import "./Projects.css";
+import "./projects.css";
 import { getProjects, createProject, deleteProject } from "../../api/project";
 import { toast } from "react-toastify";
 
