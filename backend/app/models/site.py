@@ -1,10 +1,11 @@
 # app/models/site.py
 from datetime import datetime
 
-from app.database import Base
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import relationship
+
+from app.database import Base
 
 
 class Site(Base):

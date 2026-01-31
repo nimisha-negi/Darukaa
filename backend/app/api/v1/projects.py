@@ -1,11 +1,12 @@
 from typing import List
 
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
 from app.api.v1.deps import get_current_user, get_db
 from app.models.project import Project
 from app.models.user import User
 from app.schema.project import ProjectCreate, ProjectOut
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/projects", tags=["Projects"])
 
