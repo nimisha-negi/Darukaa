@@ -6,7 +6,7 @@ sys.path.append(os.getcwd())
 
 try:
     print("Attempting to import app.main...")
-    from app.main import app
+    from app.main import app  # noqa: F401
 
     print("Successfully imported app.main")
 
