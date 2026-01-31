@@ -1,4 +1,4 @@
-const BASE_URL = "http://127.0.0.1:8000/projects/";
+const BASE_URL = process.env.REACT_APP_API_URL + "/projects/";
 
 const getAuthHeader = () => {
   const token = localStorage.getItem("access_token");

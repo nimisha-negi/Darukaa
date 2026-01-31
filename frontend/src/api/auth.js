@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://127.0.0.1:8000/auth";
+const BASE_URL = process.env.REACT_APP_API_URL + "/auth";
 
 // REGISTER API
 export const registerUser = async (formData) => {
