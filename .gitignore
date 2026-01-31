@@ -13,3 +13,4 @@ backend/.env
 # OS / Others
 .DS_Store
 Thumbs.db
+CI_CD_GUIDE.md
