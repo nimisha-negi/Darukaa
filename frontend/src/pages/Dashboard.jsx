@@ -5,7 +5,6 @@ import Navbar from "../components/layout/Navbar";
 import Projects from "../components/dashboard/Projects";
 import Analytics from "../components/dashboard/Analytics";
 import DashLanding from "../components/dashboard/DashLanding";
-import ProjectDetail from "../components/dashboard/ProjectDetail";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("dashlanding");

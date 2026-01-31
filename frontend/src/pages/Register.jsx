@@ -93,7 +93,7 @@ export default function Register() {
       <div className="glass-card right">
         <div className="logo-row">
           <img src={logo} className="logo" alt="logo" />
-          <span className="brand-name">Darukaa.Earth</span>
+          <span className="brand-name">Darukaaa.Earth</span>
         </div>
 
         <h2>Create Account</h2>
@@ -180,7 +180,7 @@ export default function Register() {
           fontSize="14"
           fontFamily="Inter, sans-serif"
         >
-          © 2026 Darukaa.Earth. All rights reserved.
+          © 2026 Darukaaa.Earth. All rights reserved.
         </text>
       </svg>
     </motion.div>
