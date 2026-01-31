@@ -11,6 +11,7 @@ app = FastAPI(title="Daruka.Earth Backend", version="1.0")
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "https://darukaa.onrender.com"
 ]
 
 app.add_middleware(
