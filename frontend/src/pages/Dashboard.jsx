@@ -3,7 +3,6 @@ import "./Dashboard.css"
 import Sidebar from "../components/layout/Sidebar";
 import Navbar from "../components/layout/Navbar";
 import Projects from "../components/dashboard/Projects";
-import Reports from "../components/dashboard/Reports";
 import Analytics from "../components/dashboard/Analytics";
 import DashLanding from "../components/dashboard/DashLanding";
 import ProjectDetail from "../components/dashboard/ProjectDetail";
@@ -27,8 +26,6 @@ export default function Dashboard() {
         return <DashLanding/>
       case "projects":
         return <Projects />;
-      case "reports":
-        return <Reports />;
       case "analytics":
         return <Analytics />;
       default:

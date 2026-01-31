@@ -31,7 +31,7 @@ export default function Analytics() {
 
     mapRef.current = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: "mapbox://styles/mapbox/dark-v11",
+      style: "mapbox://styles/mapbox/streets-v12",
       center: [78.9629, 20.5937],
       zoom: 4,
     });

@@ -28,15 +28,9 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           className={activeTab === "analytics" ? "active" : ""}
           onClick={() => setActiveTab("analytics")}
         >
-          Carbon Analytics
+          Site Analytics
         </button>
 
-        <button
-          className={activeTab === "reports" ? "active" : ""}
-          onClick={() => setActiveTab("reports")}
-        >
-          Biodiversity Tracking
-        </button>
       </nav>
     </aside>
   );

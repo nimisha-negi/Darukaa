@@ -4,18 +4,16 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
 
 import bg from "../assets/bg.png";
 import logo from "../assets/logo.png";
 
+import { loginUser } from "../api/auth"; // ✅ NEW
+
 export default function Login() {
   const navigate = useNavigate();
-
-  // Mouse position relative to center
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  // Form state
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -37,23 +35,18 @@ export default function Login() {
   };
 
   const handleSubmit = async () => {
-    // Frontend validation
     if (!formData.email || !formData.password) {
       toast.error("Email and password are required!");
       return;
     }
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/auth/login",
-        formData
-      );
+      const data = await loginUser(formData); // ✅ API CALL FROM auth.js
+
       toast.success("Login successful!");
+      localStorage.setItem("access_token", data.access_token);
 
-      // Save token (optional)
-      localStorage.setItem("access_token", response.data.access_token);
-
-      setTimeout(() => navigate("/dashboard"), 1500); // redirect to dashboard
+      setTimeout(() => navigate("/dashboard"), 1500);
     } catch (err) {
       if (err.response) {
         toast.error(err.response.data.detail || err.response.data.error);
@@ -65,7 +58,6 @@ export default function Login() {
 
   return (
     <div className="auth-page login" onMouseMove={handleMouseMove}>
-      {/* Background image */}
       <motion.div
         className="bg-image"
         style={{
@@ -78,7 +70,7 @@ export default function Login() {
 
       <div className="glass-card right">
         <div className="logo-row">
-          <img src={logo} className="logo" />
+          <img src={logo} className="logo" alt="logo" />
           <span className="brand-name">Darukaa.Earth</span>
         </div>
 
@@ -107,10 +99,9 @@ export default function Login() {
         </span>
       </div>
 
-      {/* Toast container */}
       <ToastContainer position="top-right" autoClose={3000} />
-      
-      {/* Footer wave SVG */}
+
+      {/* Footer wave SVG (same as yours) */}
       <svg
         className="footer-wave"
         viewBox="0 0 1440 260"
@@ -121,7 +112,7 @@ export default function Login() {
           d="M0,160 C160,140 320,120 480,130 C640,140 800,180 960,185 C1120,190 1280,175 1440,180 L1440,260 L0,260 Z"
           fill="#f5efe6"
         />
-        {/* Left text group */}
+
         <g fill="#6b5f4d" fontSize="16" fontFamily="Inter, sans-serif">
           <g transform="translate(200 160)">
             <path
@@ -130,6 +121,7 @@ export default function Login() {
             />
             <text x="26" y="14">Manage Environmental Sites</text>
           </g>
+
           <g transform="translate(200 190)">
             <path
               d="M0 18h4V8H0v10zm6 0h4V0H6v18zm6 0h4V12h-4v6z"
@@ -137,6 +129,7 @@ export default function Login() {
             />
             <text x="26" y="14">Track Carbon & Biodiversity Data</text>
           </g>
+
           <g transform="translate(200 220)">
             <path
               d="M8 0l8 4v6c0 5-3.4 9.6-8 11-4.6-1.4-8-6-8-11V4l8-4z"

@@ -5,17 +5,30 @@ import {
   LinearScale,
   PointElement,
   LineElement,
+  ArcElement,
+  BarElement,
   Tooltip,
   Legend,
 } from "chart.js";
-import { Line } from "react-chartjs-2";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
+import { Line, Doughnut, Bar } from "react-chartjs-2";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  ArcElement,
+  BarElement,
+  Tooltip,
+  Legend
+);
 
 export default function SiteAnalytics({ site, projectName, onClose }) {
   if (!site) return null;
 
   const labels = ["Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov"];
+
   const carbonData = [1000, 5000, 10000, 30000, 40000, 45000, 60000, 80000, 120000];
   const biodiversityData = [60, 70, 95, 75, 90, 78, 85, 92, 80];
 
@@ -28,53 +41,159 @@ export default function SiteAnalytics({ site, projectName, onClose }) {
     },
   };
 
+  // Random metrics (demo)
   const area = (Math.random() * 5000 + 1500).toFixed(2);
   const treeCount = Math.floor(Math.random() * 500000 + 150000);
   const vegetation = (Math.random() * 30 + 60).toFixed(1);
   const soilCarbon = (Math.random() * 5 + 1).toFixed(2);
 
+  // ✅ Doughnut chart (Carbon Storage Breakdown)
+  const carbonBreakdownData = {
+    labels: ["Soil Carbon", "Tree Biomass", "Grassland", "Wetlands"],
+    datasets: [
+      {
+        label: "Carbon Share",
+        data: [35, 40, 15, 10],
+        backgroundColor: [
+          "rgba(46,125,50,0.75)",
+          "rgba(25,118,210,0.75)",
+          "rgba(255,193,7,0.75)",
+          "rgba(156,39,176,0.75)",
+        ],
+        borderWidth: 0,
+      },
+    ],
+  };
+
+  const doughnutOptions = {
+    responsive: true,
+    plugins: {
+      legend: { position: "bottom" },
+    },
+    cutout: "65%",
+  };
+
+  // ✅ Bar chart (Monthly Carbon)
+  const carbonBarData = {
+    labels,
+    datasets: [
+      {
+        label: "Monthly Carbon (tonnes)",
+        data: carbonData,
+        backgroundColor: "rgba(46,125,50,0.55)",
+        borderRadius: 10,
+      },
+    ],
+  };
+
+  const barOptions = {
+    responsive: true,
+    plugins: { legend: { position: "bottom" } },
+    scales: {
+      x: { grid: { display: false } },
+      y: { grid: { color: "#eee" } },
+    },
+  };
+
+  // ✅ Line chart (Biodiversity trend)
+  const biodiversityLineData = {
+    labels,
+    datasets: [
+      {
+        label: "Biodiversity Score",
+        data: biodiversityData,
+        borderColor: "#1976d2",
+        backgroundColor: "rgba(25,118,210,0.15)",
+        pointRadius: 4,
+        tension: 0.35,
+      },
+    ],
+  };
+
   return (
-    <div className="analytics-overlay">
-  <div className="analytics-card">
-    <button className="close-btn" onClick={onClose}>×</button>
+    <div className="sa-overlay" onClick={onClose}>
+      <div className="sa-card" onClick={(e) => e.stopPropagation()}>
+        {/* Header */}
+        <div className="sa-header">
+          <div className="sa-title">
+            <h2>
+              {projectName} — <span>{site.name}</span>
+            </h2>
+            <p className="sa-subtitle">Site Analytics Overview</p>
+          </div>
 
-    <div className="modal-scroll">
-      <h2>{projectName} - {site.name}</h2>
-
-      {/* Metrics Grid */}
-      <div className="metrics-grid">
-        <div className="metric-card">
-          <h4>Site Overview</h4>
-          <div className="metric-row"><span>Area</span><strong>{area} hectares</strong></div>
-          <div className="metric-row"><span>Carbon Sequestration</span><strong>{carbonData.at(-1)} tonnes</strong></div>
-          <div className="metric-row"><span>Biodiversity Score</span><strong>{biodiversityData.at(-1)}</strong></div>
-          <div className="metric-row"><span>Created</span><strong>{new Date().toLocaleDateString()}</strong></div>
+          <button className="sa-close-btn" onClick={onClose}>
+            ×
+          </button>
         </div>
 
-        <div className="metric-card">
-          <h4>Latest Metrics</h4>
-          <div className="metric-row"><span>Tree Count</span><strong>{treeCount.toLocaleString()}</strong></div>
-          <div className="metric-row"><span>Vegetation Cover</span><strong>{vegetation}%</strong></div>
-          <div className="metric-row"><span>Soil Carbon</span><strong>{soilCarbon}%</strong></div>
-          <div className="metric-row"><span>Last Updated</span><strong>{new Date().toLocaleDateString()}</strong></div>
-        </div>
-      </div>
+        {/* Scroll only inside card */}
+        <div className="sa-scroll">
+          {/* Metrics */}
+          <div className="sa-metrics-grid">
+            <div className="sa-metric-card">
+              <h4>Site Overview</h4>
+              <div className="sa-metric-row">
+                <span>Area</span>
+                <strong>{area} hectares</strong>
+              </div>
+              <div className="sa-metric-row">
+                <span>Total Carbon</span>
+                <strong>{carbonData.at(-1)} tonnes</strong>
+              </div>
+              <div className="sa-metric-row">
+                <span>Biodiversity Score</span>
+                <strong>{biodiversityData.at(-1)}</strong>
+              </div>
+              <div className="sa-metric-row">
+                <span>Created</span>
+                <strong>{new Date().toLocaleDateString()}</strong>
+              </div>
+            </div>
 
-      {/* Charts */}
-      <div className="charts-grid">
-        <div className="chart-card">
-          <h4>Carbon Sequestration Over Time</h4>
-          <Line data={{ labels, datasets: [{ label: "Carbon Sequestration", data: carbonData, borderColor: "#4caf50", backgroundColor: "rgba(76,175,80,0.2)", pointRadius: 4, tension: 0.3 }]}} options={chartOptions} />
-        </div>
+            <div className="sa-metric-card">
+              <h4>Latest Metrics</h4>
+              <div className="sa-metric-row">
+                <span>Tree Count</span>
+                <strong>{treeCount.toLocaleString()}</strong>
+              </div>
+              <div className="sa-metric-row">
+                <span>Vegetation Cover</span>
+                <strong>{vegetation}%</strong>
+              </div>
+              <div className="sa-metric-row">
+                <span>Soil Carbon</span>
+                <strong>{soilCarbon}%</strong>
+              </div>
+              <div className="sa-metric-row">
+                <span>Last Updated</span>
+                <strong>{new Date().toLocaleDateString()}</strong>
+              </div>
+            </div>
+          </div>
 
-        <div className="chart-card">
-          <h4>Biodiversity Score Over Time</h4>
-          <Line data={{ labels, datasets: [{ label: "Biodiversity Score", data: biodiversityData, borderColor: "#2196f3", backgroundColor: "rgba(33,150,243,0.2)", pointRadius: 4, tension: 0.3 }]}} options={chartOptions} />
+          {/* Charts */}
+          <div className="sa-charts-grid">
+            {/* Doughnut */}
+            <div className="sa-chart-card">
+              <h4>Carbon Storage Breakdown</h4>
+              <Doughnut data={carbonBreakdownData} options={doughnutOptions} />
+            </div>
+
+            {/* Bar */}
+            <div className="sa-chart-card">
+              <h4>Monthly Carbon Sequestration</h4>
+              <Bar data={carbonBarData} options={barOptions} />
+            </div>
+
+            {/* Line */}
+            <div className="sa-chart-card sa-chart-wide">
+              <h4>Biodiversity Score Trend</h4>
+              <Line data={biodiversityLineData} options={chartOptions} />
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-
   );
 }
