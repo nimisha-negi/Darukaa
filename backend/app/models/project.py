@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
@@ -12,7 +12,11 @@ class Project(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
     icon = Column(String, default="🌍")
-    updated = Column(DateTime, default=datetime.utcnow)
+    updated = Column(
+        DateTime,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
     description = Column(String)
     owner_id = Column(Integer, ForeignKey("users.id"))
     owner = relationship("User", back_populates="projects")

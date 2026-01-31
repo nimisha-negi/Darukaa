@@ -6,6 +6,7 @@ import { getAllSites } from "../../api/sites";
 import { getProjects } from "../../api/project";
 
 import SiteAnalytics from "./SiteAnalytics";
+import "./projects.css";
 
 export default function Analytics() {
   const mapContainerRef = useRef(null);
