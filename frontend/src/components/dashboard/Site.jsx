@@ -15,7 +15,6 @@ export default function Site({ project, onClose }) {
 
   const [savedSites, setSavedSites] = useState([]);
 
-  // ✅ INIT MAP ONCE
   useEffect(() => {
     mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
@@ -42,22 +41,21 @@ export default function Site({ project, onClose }) {
     };
   }, []);
 
-  // ✅ LOAD SITES WHEN PROJECT CHANGES
   useEffect(() => {
     const loadSites = async () => {
       if (!project?.id) return;
       if (!drawRef.current) return;
 
       try {
-        // 🟢 Clear previous polygons from map
+        // Clear previous polygons from map
         drawRef.current.deleteAll();
 
-        // 🟢 Fetch only this project's sites
+        // Fetch only this project's sites
         const backendSites = await getSitesByProject(project.id);
 
         setSavedSites(backendSites);
 
-        // 🟢 Add polygons to map
+        // Add polygons to map
         backendSites.forEach((site) => {
           if (site?.feature) {
             drawRef.current.add(site.feature);
@@ -72,12 +70,10 @@ export default function Site({ project, onClose }) {
     loadSites();
   }, [project?.id]);
 
-  // ✅ ADD POLYGON MODE
   const handleAddSiteMode = () => {
     drawRef.current.changeMode("draw_polygon");
   };
 
-  // ✅ SAVE ONLY NEW POLYGONS
   const handleSaveSites = async () => {
     try {
       const data = drawRef.current.getAll();
@@ -115,8 +111,8 @@ export default function Site({ project, onClose }) {
         });
       }
 
-      // 🔁 Reload again from backend after saving
       const backendSites = await getSitesByProject(project.id);
+      toast.success("Site saved successfully!");
       setSavedSites(backendSites);
 
       // refresh map polygons
@@ -124,23 +120,18 @@ export default function Site({ project, onClose }) {
       backendSites.forEach((site) => {
         if (site?.feature) drawRef.current.add(site.feature);
       });
-      toast.success("Site saved successfully!");
     } catch (err) {
       toast.error
       console.error("Error saving sites:", err);
     }
   };
 
-  // ✅ DELETE SITE
+  // DELETE SITE
   const handleDeleteSite = async (siteId) => {
     try {
       await deleteSite(siteId);
 
-      // remove from UI list
       setSavedSites((prev) => prev.filter((s) => s.site_id !== siteId));
-
-      // remove from map polygons (by feature id)
-      // safest: reload sites after delete
       const backendSites = await getSitesByProject(project.id);
       setSavedSites(backendSites);
 
@@ -156,6 +147,7 @@ export default function Site({ project, onClose }) {
 
   return (
     <div className="site-map-overlay">
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="site-map-header">
         <div>
           <h2>{project?.title}</h2>

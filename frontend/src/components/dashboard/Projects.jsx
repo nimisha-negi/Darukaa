@@ -24,14 +24,10 @@ export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [showAddSiteModal, setShowAddSiteModal] = useState(false);
 
-  // ✅ CHANGE 1: normalize project data (moved out)
-  // (removed from here)
-
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const data = await getProjects();
-        // ✅ CHANGE 2: normalize backend response before saving in state
         const normalized = Array.isArray(data) ? data.map(normalizeProject) : [];
         setProjects(normalized);
       } catch (err) {
@@ -48,16 +44,15 @@ export default function Projects() {
     try {
       const created = await createProject(newProject);
 
-      // ✅ CHANGE 3: normalize newly created project also
       const normalizedCreated = normalizeProject(created);
 
       setProjects([normalizedCreated, ...projects]);
-
+      toast.success("Project added successfully!");
       setNewProject({ title: "", icon: "🌍", description: "" });
       setShowCreateModal(false);
     } catch (err) {
       console.error(err.message);
-      toast.error(err.message);
+      toast.error("Error while creating projects!");
     }
   };
 
@@ -67,14 +62,13 @@ export default function Projects() {
       toast.success("Project deleted!");
       setProjects((prev) => prev.filter((p) => p.id !== id));
 
-      // ✅ CHANGE 4: if user deletes the currently selected project, close modals
       if (selectedProject?.id === id) {
         setSelectedProject(null);
         setShowAddSiteModal(false);
       }
     } catch (err) {
       console.error(err.message);
-      toast.error(err.message);
+      toast.error("Error while deleting project!");
     }
   };
 
