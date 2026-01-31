@@ -147,7 +147,7 @@ export default function Site({ project, onClose }) {
 
   return (
     <div className="site-map-overlay">
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-center" autoClose={3000} />
       <div className="site-map-header">
         <div>
           <h2>{project?.title}</h2>

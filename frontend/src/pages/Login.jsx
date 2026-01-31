@@ -41,7 +41,7 @@ export default function Login() {
     }
 
     try {
-      const data = await loginUser(formData); // ✅ API CALL FROM auth.js
+      const data = await loginUser(formData); //API CALL FROM auth.js
 
       toast.success("Login successful!");
       localStorage.setItem("access_token", data.access_token);
