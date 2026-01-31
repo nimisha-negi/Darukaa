@@ -10,8 +10,9 @@ try:
 
     print("Successfully imported app.main")
 
-    from app.database import engine
     from sqlalchemy import text
+
+    from app.database import engine
 
     print("Attempting to connect to database...")
     with engine.connect() as connection:
