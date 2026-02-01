@@ -17,9 +17,4 @@ class Site(Base):
     name = Column(String, nullable=False)
     feature = Column(JSON)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    updated = Column(
-        DateTime,
-        default=lambda: datetime.now(timezone.utc),
-        onupdate=lambda: datetime.now(timezone.utc),
-    )
     project = relationship("Project", back_populates="sites")
