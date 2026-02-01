@@ -132,8 +132,8 @@
 }
 
 .modal-actions button:first-child {
-  background: #f1f5f9;
-  color: #d32f2f;
+  background: #d32f2f;
+  color: white;
   border: 1px solid #e2e8f0;
 }
 
