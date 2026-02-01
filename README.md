@@ -4,6 +4,8 @@ Darukaa.Earth is a full-stack geospatial dashboard built for managing and visual
 It allows administrators to create projects, add multiple geographical sites, and track site performance through interactive maps and analytics.
 
 ---
+## 🔗 Live Demo
+https://darukaa-frontend-l8wz.onrender.com  
 
 ## 🚀 Core User Stories
 
